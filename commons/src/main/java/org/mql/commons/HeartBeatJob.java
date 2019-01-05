@@ -17,6 +17,7 @@ public class HeartBeatJob implements Job {
 
   private Client client;
 
+  // TODO: should be fetched from ENV variables or from Config file
   public static final String REGISTRY_URL = "http://localhost:8081";
 
   public HeartBeatJob() {
@@ -35,6 +36,7 @@ public class HeartBeatJob implements Job {
     }
   }
 
+  // TODO: should be parameterized, {@see NetworkInterface}
   private JsonObject createRegistryPayload() {
     return Json.createObjectBuilder()
         .add("host", "127.0.0.1")
