@@ -16,10 +16,13 @@ import org.quartz.impl.StdSchedulerFactory;
  */
 public class HeartBeats {
 
-  public static void startHeartBeats() throws SchedulerException {
+  public static void startHeartBeats(String appName, String appHost, int appPort) throws SchedulerException {
     SchedulerFactory schedulerFactory = new StdSchedulerFactory();
     Scheduler scheduler = schedulerFactory.getScheduler();
     JobDetail jobDetail = newJob(HeartBeatJob.class)
+        .usingJobData("appName", appName)
+        .usingJobData("appHost", appHost)
+        .usingJobData("appPort", appPort)
         .withIdentity("heartbeat")
         .build();
     Trigger trigger = newTrigger()

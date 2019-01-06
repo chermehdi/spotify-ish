@@ -7,6 +7,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import org.quartz.Job;
+import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -26,7 +27,9 @@ public class HeartBeatJob implements Job {
 
   @Override
   public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-    JsonObject payload = createRegistryPayload();
+    JobDataMap dataMap = jobExecutionContext.getJobDetail().getJobDataMap();
+    JsonObject payload = createRegistryPayload(dataMap);
+
     try {
       client.target(REGISTRY_URL + "/register").request()
           .post(Entity.entity(payload, MediaType.APPLICATION_JSON));
@@ -37,11 +40,11 @@ public class HeartBeatJob implements Job {
   }
 
   // TODO: should be parameterized, {@see NetworkInterface}
-  private JsonObject createRegistryPayload() {
+  private JsonObject createRegistryPayload(JobDataMap dataMap) {
     return Json.createObjectBuilder()
-        .add("host", "127.0.0.1")
-        .add("port", 8080)
-        .add("name", "gateway")
+        .add("host", dataMap.getString("appHost"))
+        .add("port", dataMap.getInt("appPort"))
+        .add("name", dataMap.getString("appName"))
         .build();
   }
 }

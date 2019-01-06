@@ -23,17 +23,19 @@ import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
+import org.mql.artists.resources.ArtistsResource;
 
 /**
  * Simple Application that produces a greeting message.
  */
 @ApplicationScoped
 @ApplicationPath("/")
-public class GreetApplication extends Application {
+public class ArtistApplication extends Application {
 
   @Override
   public Set<Class<?>> getClasses() {
     Set<Class<?>> set = new HashSet<>();
+    set.add(ArtistsResource.class);
     return Collections.unmodifiableSet(set);
   }
 }

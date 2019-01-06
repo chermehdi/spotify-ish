@@ -16,18 +16,16 @@
 
 package org.mql.registry;
 
+import io.helidon.microprofile.server.Server;
 import java.io.IOException;
 import java.util.logging.LogManager;
-
-import io.helidon.microprofile.server.Server;
-import org.quartz.SchedulerException;
 
 /**
  * Main method simulating trigger of main method of the server.
  */
 public final class Main {
 
-  public static void main(final String[] args) throws IOException, SchedulerException {
+  public static void main(final String[] args) throws IOException {
     startServer();
   }
 

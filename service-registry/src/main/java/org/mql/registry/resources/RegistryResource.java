@@ -29,9 +29,8 @@ public class RegistryResource {
   @GET
   public Response applications() {
     JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-    apps.keySet()
+    apps.values()
         .stream()
-        .map(this::createAppsObject)
         .forEach(object -> arrayBuilder.add(object));
     return Response.ok(arrayBuilder.build()).build();
   }

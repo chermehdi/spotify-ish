@@ -29,8 +29,8 @@ import org.quartz.SchedulerException;
 public final class Main {
 
   public static void main(final String[] args) throws IOException, SchedulerException {
-    startServer();
-    HeartBeats.startHeartBeats();
+    Server server = startServer();
+    HeartBeats.startHeartBeats("artist-service", "127.0.0.1", server.getPort());
   }
 
   protected static Server startServer() throws IOException {

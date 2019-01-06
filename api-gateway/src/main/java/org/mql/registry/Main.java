@@ -29,7 +29,7 @@ public final class Main {
 
   public static void main(final String[] args) throws IOException, SchedulerException {
     Server server = startServer();
-    HeartBeats.startHeartBeats();
+    HeartBeats.startHeartBeats("gateway", "127.0.0.1", server.getPort());
   }
 
   protected static Server startServer() throws IOException {
