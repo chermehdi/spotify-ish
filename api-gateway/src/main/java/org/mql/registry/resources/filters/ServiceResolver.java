@@ -9,6 +9,9 @@ import org.mql.registry.resources.resolver.RegistryService;
 import org.mql.registry.resources.resolver.ServiceDescription;
 
 /**
+ * Resolves a {@link ServiceDescription} based on the given {@link UriInfo}
+ *
+ * @author HoudaOul
  * @author chermehdi
  */
 public class ServiceResolver {
@@ -35,7 +38,7 @@ public class ServiceResolver {
     return uriInfo.getPathSegments()
         .stream()
         .skip(1)
-        .map(path -> path.getPath())
+        .map(PathSegment::getPath)
         .collect(Collectors.joining("/"));
   }
 }

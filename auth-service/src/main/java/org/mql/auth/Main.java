@@ -14,33 +14,42 @@
  * limitations under the License.
  */
 
-package org.mql.registry;
+package org.mql.auth;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.LogManager;
 
 import io.helidon.microprofile.server.Server;
-import java.io.IOException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.LogManager;
-import javax.enterprise.inject.se.SeContainer;
-import org.mql.registry.jobs.ApplicationStatusChecker;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import org.h2.jdbcx.JdbcDataSource;
 
 /**
  * Main method simulating trigger of main method of the server.
  */
 public final class Main {
 
-  public static void main(final String[] args) throws IOException {
-    Server server = startServer();
-    SeContainer container = server.getContainer();
-    ApplicationStore store = container.select(ApplicationStore.class).get();
-    final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(3);
-    scheduledExecutorService
-        .scheduleAtFixedRate(new ApplicationStatusChecker(store), 0, 1, TimeUnit.MINUTES);
+  public static void main(final String[] args) throws IOException, SQLException {
+    org.h2.tools.Server dbServer = org.h2.tools.Server.createTcpServer(args);
+    dbServer.start();
+    JdbcDataSource jdbcDataSource = new JdbcDataSource();
+    jdbcDataSource.setURL("jdbc:h2:mem:db");
+    jdbcDataSource.setPassword("sa");
+    jdbcDataSource.setUser("sa");
+    Connection connection = jdbcDataSource.getConnection();
+    System.out.println("connection object " + connection);
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("auth-unit");
+    EntityManager em = emf.createEntityManager();
+    System.out.println("entity manager " + em);
+    System.out.println(dbServer.getStatus() + " " + dbServer.getURL());
+    startServer();
   }
 
   protected static Server startServer() throws IOException {
+
     LogManager.getLogManager().readConfiguration(
         Main.class.getResourceAsStream("/logging.properties"));
     Server server = Server.create();

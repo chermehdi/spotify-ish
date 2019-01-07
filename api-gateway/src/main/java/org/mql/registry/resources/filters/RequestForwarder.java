@@ -11,6 +11,7 @@ import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Provider;
@@ -20,6 +21,7 @@ import org.mql.registry.resources.resolver.ServiceDescription;
  * This filter will never match any resource (because the service provides none), and will forward
  * each request to a computed uri using the standard rest {@link Client}
  *
+ * @author HoudaOul
  * @author chermehdi
  */
 @Provider
@@ -52,5 +54,8 @@ public class RequestForwarder implements ContainerResponseFilter {
   private void computeResponse(ContainerResponseContext responseContext, Response response) {
     responseContext.setEntity(response.getEntity());
     responseContext.setStatus(response.getStatus());
+    MultivaluedMap<String, Object> headers = response.getHeaders();
+    headers.forEach(
+        (headerName, headerValue) -> responseContext.getHeaders().add(headerName, headerValue));
   }
 }

@@ -13,6 +13,7 @@
     <module>service-registry</module>
     <module>artists-service</module>
     <module>commons</module>
+    <module>auth-service</module>
   </modules>
   <packaging>pom</packaging>
   <name>spotifish-parent</name>

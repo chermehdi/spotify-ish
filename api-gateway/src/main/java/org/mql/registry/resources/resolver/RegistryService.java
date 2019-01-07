@@ -6,6 +6,9 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 
 /**
+ * Retrieves a {@link ServiceDescription} based on the service name
+ *
+ * @author HoudaOul
  * @author chermehdi
  */
 @RequestScoped
@@ -21,7 +24,8 @@ public class RegistryService {
           .request().get(ServiceDescription.class);
       return Optional.of(serviceDescription);
     } catch (Exception e) {
-      System.out.println("an error occured when trying to resolve the service name " + e.getMessage());
+      System.out
+          .println("an error occured when trying to resolve the service name " + e.getMessage());
       return Optional.empty();
     }
   }

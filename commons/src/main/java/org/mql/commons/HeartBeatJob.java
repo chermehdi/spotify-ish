@@ -12,6 +12,8 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 /**
+ * Sends a registration request to the registry service
+ *
  * @author chermehdi
  */
 public class HeartBeatJob implements Job {

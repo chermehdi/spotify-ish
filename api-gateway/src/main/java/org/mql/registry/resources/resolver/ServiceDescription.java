@@ -1,6 +1,17 @@
 package org.mql.registry.resources.resolver;
 
 /**
+ * Basic service description object, the same json format returned by the registry service a simple
+ * Example of the response returned
+ * <pre>
+ *   {
+ *     "name": "service-name",
+ *     "port": 8181,
+ *     "host": "127.0.0.1"
+ *   }
+ * </pre>
+ *
+ * @author HoudaOul
  * @author chermehdi
  */
 public class ServiceDescription {

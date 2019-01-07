@@ -14,33 +14,26 @@
  * limitations under the License.
  */
 
-package org.mql.registry;
+package org.mql.auth;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
-import org.mql.registry.exceptions.ApplicationNotFoundMapper;
-import org.mql.registry.resources.RegistryResource;
 
 /**
  * Simple Application that produces a greeting message.
  */
 @ApplicationScoped
 @ApplicationPath("/")
-public class RegistryApplication extends Application {
-
-  private final Set<Class<?>> resourceClasses = new HashSet<>(
-      Arrays.asList(
-          RegistryResource.class, ApplicationNotFoundMapper.class
-      )
-  );
+public class AuthApplication extends Application {
 
   @Override
   public Set<Class<?>> getClasses() {
-    return Collections.unmodifiableSet(resourceClasses);
+    Set<Class<?>> set = new HashSet<>();
+    return Collections.unmodifiableSet(set);
   }
 }

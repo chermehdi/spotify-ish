@@ -16,15 +16,15 @@
 
 package org.mql.registry;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
+import org.mql.commons.filters.CorsFilter;
 import org.mql.registry.resources.ApiResource;
-import org.mql.registry.resources.filters.CorsFilter;
 import org.mql.registry.resources.filters.RequestForwarder;
 
 /**
@@ -34,13 +34,19 @@ import org.mql.registry.resources.filters.RequestForwarder;
 @ApplicationPath("/")
 public class ApiGatewayApplication extends Application {
 
+  private final Class<?>[] resources = {
+      ApiResource.class,
+      RequestForwarder.class,
+      CorsFilter.class
+  };
+
   @Override
   public Set<Class<?>> getClasses() {
-    Set<Class<?>> set = new HashSet<>();
-    set.add(ApiResource.class);
-    set.add(RequestForwarder.class);
-    set.add(CorsFilter.class);
-    return Collections.unmodifiableSet(set);
+    return Collections.unmodifiableSet(
+        new HashSet<>(
+            Arrays.asList(resources)
+        )
+    );
   }
 
 }
