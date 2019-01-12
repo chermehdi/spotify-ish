@@ -14,32 +14,49 @@
  * limitations under the License.
  */
 
-package org.mql.auth;
+package org.mql.users;
 
-import io.helidon.microprofile.server.Server;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.LogManager;
+
+import io.helidon.microprofile.server.Server;
 import javax.enterprise.inject.se.SeContainer;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import org.mql.commons.HeartBeats;
+import org.quartz.SchedulerException;
 
 /**
  * Main method simulating trigger of main method of the server.
  */
 public final class Main {
 
-  public static void main(final String[] args) throws IOException, SQLException {
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("auth-unit");
-    startServer();
+  static Server server;
+
+  static SeContainer cdiContainer;
+
+  public static void main(final String[] args)
+      throws IOException, SchedulerException, SQLException {
+    startDbServer(args);
+    server = startServer();
+    cdiContainer = server.getContainer();
+    HeartBeats.startHeartBeats("user-service", "127.0.0.1", server.getPort());
   }
 
+  private static void startDbServer(String[] args) throws SQLException {
+    org.h2.tools.Server dbServer = org.h2.tools.Server.createTcpServer(args);
+    dbServer.start();
+  }
 
   protected static Server startServer() throws IOException {
     LogManager.getLogManager().readConfiguration(
         Main.class.getResourceAsStream("/logging.properties"));
+
     Server server = Server.create();
     server.start();
     return server;
+  }
+
+  public static SeContainer getCdiContainer() {
+    return cdiContainer;
   }
 }

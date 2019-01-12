@@ -14,19 +14,20 @@ import org.quartz.impl.StdSchedulerFactory;
 /**
  * @author chermehdi
  */
-public class HeartBeats {
+public final class HeartBeats {
 
   public static void startHeartBeats(String appName, String appHost, int appPort) throws SchedulerException {
+    System.out.println("hello from heartbeats " + Thread.currentThread().getName());
     SchedulerFactory schedulerFactory = new StdSchedulerFactory();
     Scheduler scheduler = schedulerFactory.getScheduler();
     JobDetail jobDetail = newJob(HeartBeatJob.class)
         .usingJobData("appName", appName)
         .usingJobData("appHost", appHost)
         .usingJobData("appPort", appPort)
-        .withIdentity("heartbeat")
+        .withIdentity("heartbeat-" + appName)
         .build();
     Trigger trigger = newTrigger()
-        .withIdentity("heartbeat-trigger")
+        .withIdentity("heartbeat-trigger-" + appName)
         .startNow()
         .withSchedule(simpleSchedule()
             .withIntervalInSeconds(60)
@@ -34,5 +35,6 @@ public class HeartBeats {
         .build();
     scheduler.scheduleJob(jobDetail, trigger);
     scheduler.start();
+    System.out.println("scheduler state " + scheduler.isStarted());
   }
 }

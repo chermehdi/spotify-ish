@@ -14,9 +14,11 @@
 # limitations under the License.
 #
 
-# Application properties. This is the default greeting
-app.greeting=Hello
+#FROM openjdk:8-jre-slim
+FROM openjdk:8-jre-alpine
 
-# Microprofile server properties
-server.port=8086
-server.host=0.0.0.0
+RUN mkdir /app
+COPY ${project.artifactId}.jar /app
+COPY libs /app/libs
+
+CMD ["java", "-jar", "/app/${project.artifactId}.jar"]

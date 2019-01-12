@@ -24,11 +24,13 @@ public class HeartBeatJob implements Job {
   public static final String REGISTRY_URL = "http://localhost:8081";
 
   public HeartBeatJob() {
+    System.out.println("created the heartbeat job " + Thread.currentThread().getName());
     client = ClientBuilder.newClient();
   }
 
   @Override
   public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    System.out.println("registering with client !!");
     JobDataMap dataMap = jobExecutionContext.getJobDetail().getJobDataMap();
     JsonObject payload = createRegistryPayload(dataMap);
 

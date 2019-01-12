@@ -35,6 +35,7 @@ public class ArtistsResource {
     return Response.ok(allArtists).build();
   }
 
+
   private JsonArray computeArtistsArray() {
     JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
     arrayBuilder.add(Json.createObjectBuilder().add("name", "mehdi"));
