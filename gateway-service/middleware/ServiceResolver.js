@@ -13,6 +13,8 @@ const constructUrl = (url, serviceInfo) => {
   return `http://${serviceInfo.host}:${serviceInfo.port}/${url}`
 }
 
+// resolves a service's information { port, host } based on it's name
+// adds a proxy object to the request to be used by future middleware to indicate the target service's actual url
 class Resolver {
 
   constructor(path) {
@@ -34,11 +36,19 @@ class Resolver {
 
 const ServiceResolver = async (req, res, next) => {
   const resolver = new Resolver(req.path)
-  const serviceInfoResponse = await resolver.resolve()
-  req.proxy = {
-    path: constructUrl(resolver.serviceTargetUrl, serviceInfoResponse.data)
+  try {
+    const serviceInfoResponse = await resolver.resolve()
+
+    req.proxy = {
+      path: constructUrl(resolver.serviceTargetUrl, serviceInfoResponse.data)
+    }
+
+    next()
+  } catch (e) {
+    console.log('RESOLVER: ', e)
+    res.status(404)
+    res.end()
   }
-  next()
 }
 
 module.exports = ServiceResolver

@@ -25,6 +25,11 @@ public class TokenHandler {
 
   Key signingKey;
 
+  // 4 hours
+  static final long DEFAULT_DURATION = 4L * 60L * 60L * 1000L;
+
+  long duration;
+
   @PostConstruct
   public void init() {
     Config configuration = Config.withSources(
@@ -35,6 +40,8 @@ public class TokenHandler {
         .orElseThrow(
             () -> new IllegalStateException("Secret Key should be available in env-variables")
         ).getBytes();
+
+    duration = configuration.get("JWT_DURATION").asOptionalLong().orElse(DEFAULT_DURATION);
 
     signingKey = new SecretKeySpec(jwtSecret, SignatureAlgorithm.HS256.getJcaName());
   }

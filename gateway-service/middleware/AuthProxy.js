@@ -33,7 +33,7 @@ const AuthProxy = (req, res, next) => {
       req.jwt_user = unsigned
       next()
     } catch (e) {
-      console.error(e.message)
+      console.error('AUTH', e)
       res.status(401)
       res.end()
     }

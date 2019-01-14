@@ -1,5 +1,8 @@
 const axios = require('axios')
 
+/**
+ * Forwards the request to the appropriate service based on the path, the path should match /service-name/service-url
+ */
 class Forwarder {
 
   constructor(req) {
@@ -8,9 +11,14 @@ class Forwarder {
     this.url = req.proxy.path
   }
 
+  // performs the request to be returned as a Promise to the ProxyRequest middleware
+  // the checking is done in order and judged based on the header types,
+  // isStreamRequest() => GET / headers: { 'content-type': 'application/octet-stream' }
+  // isGetRequest() => GET
+  // otherwise the request is performed with no additional checking
+
   async request() {
     if (this.isStreamRequest()) {
-      console.log('stream request')
       return axios({
         url: this.url,
         method: this.method,
@@ -38,6 +46,7 @@ class Forwarder {
 // to the user
 function mergeRequest(returnedResponse, responseFromService) {
   let headers = responseFromService.headers
+  // TODO: why this should be deleted, when kept we don't get any response which is weird
   delete headers['transfer-encoding']
   returnedResponse.set(headers)
 }
@@ -56,9 +65,9 @@ const ProxyRequest = async (req, res) => {
         // pipe the result into the response
         response.data.pipe(res)
       }
-    })
+    }).catch(e => console.log('catch ', e))
   } catch (e) {
-    console.error(e.message)
+    console.error('PROXY_REQUEST',e)
     res.status(500)
     res.end()
   }
