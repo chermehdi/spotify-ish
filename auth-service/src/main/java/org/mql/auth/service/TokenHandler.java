@@ -1,12 +1,14 @@
 package org.mql.auth.service;
 
+import io.helidon.config.Config;
+import io.helidon.config.ConfigSources;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
+import javax.annotation.PostConstruct;
 import javax.crypto.spec.SecretKeySpec;
 import javax.enterprise.context.ApplicationScoped;
 import javax.xml.bind.DatatypeConverter;
@@ -19,10 +21,23 @@ import org.mql.commons.views.UserView;
 @ApplicationScoped
 public class TokenHandler {
 
-  byte[] secretBytes = "32498712349871ojadhflasdfhqoeryuwqkjehroiqerhwjkdfhlsakdfhiqehridhflkasjdhflakdhflaskdjfhlaskdjhflkasdjfhlaskdjhflkasdjhflkasdhflkasjhdfoieuyroiweryiweuyriowehrshflkasjhdfasdfh"
-      .getBytes();
+  byte[] jwtSecret = null;
 
-  Key signingKey = new SecretKeySpec(secretBytes, SignatureAlgorithm.HS256.getJcaName());
+  Key signingKey;
+
+  @PostConstruct
+  public void init() {
+    Config configuration = Config.withSources(
+        ConfigSources.environmentVariables()
+    ).build();
+
+    jwtSecret = configuration.get("JWT_SECRET").asOptionalString()
+        .orElseThrow(
+            () -> new IllegalStateException("Secret Key should be available in env-variables")
+        ).getBytes();
+
+    signingKey = new SecretKeySpec(jwtSecret, SignatureAlgorithm.HS256.getJcaName());
+  }
 
   public TokenResponse generateToken(UserView userView) {
     JwtBuilder builder = Jwts.builder()

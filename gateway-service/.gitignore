@@ -13,3 +13,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 streaming-service.iml
+.env
