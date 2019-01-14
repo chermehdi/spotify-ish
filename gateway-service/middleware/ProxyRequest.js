@@ -19,7 +19,8 @@ class Forwarder {
     } else if (this.isGetRequest()) {
       return axios.get(this.url)
     } else {
-      return axios[this.method](this.url, req.body, req.headers)
+      return axios[this.method.toLowerCase()](this.url, this.req.body,
+          this.req.headers)
     }
   }
 
@@ -33,26 +34,27 @@ class Forwarder {
   }
 }
 
+// merge the response from the service into the response returned back
+// to the user
 function mergeRequest(returnedResponse, responseFromService) {
-  for (let headerName of Object.keys(responseFromService.headers)) {
-    returnedResponse.header(headerName, responseFromService.headers[headerName])
-  }
+  let headers = responseFromService.headers
+  delete headers['transfer-encoding']
+  returnedResponse.set(headers)
 }
 
-const ProxyRequest = async (req, res, next) => {
+const ProxyRequest = async (req, res) => {
   const forwarder = new Forwarder(req)
   try {
     const result = forwarder.request()
     .then(response => {
       mergeRequest(res, response)
       if (response.headers['content-type'] === 'application/json') {
-        res.json(response.data.pipe(res))
+        res.json(response.data)
       } else {
         // this is a binary response
 
         // pipe the result into the response
         response.data.pipe(res)
-        // res.json(Object.keys(response))
       }
     })
   } catch (e) {

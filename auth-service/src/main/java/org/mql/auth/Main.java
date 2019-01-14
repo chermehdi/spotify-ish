@@ -23,17 +23,20 @@ import java.util.logging.LogManager;
 import javax.enterprise.inject.se.SeContainer;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import org.mql.commons.HeartBeats;
+import org.quartz.SchedulerException;
 
 /**
  * Main method simulating trigger of main method of the server.
  */
 public final class Main {
 
-  public static void main(final String[] args) throws IOException, SQLException {
+  public static void main(final String[] args)
+      throws IOException, SQLException, SchedulerException {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("auth-unit");
-    startServer();
+    Server server = startServer();
+    HeartBeats.startHeartBeats("auth-service", "127.0.0.1", server.getPort());
   }
-
 
   protected static Server startServer() throws IOException {
     LogManager.getLogManager().readConfiguration(

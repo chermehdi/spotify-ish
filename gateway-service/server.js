@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 require('dotenv').config()
 
 const RegistryJob = require('./jobs')
-const {ServiceResolver, ProxyRequest} = require('./middleware')
+const {ServiceResolver, ProxyRequest, AuthProxy} = require('./middleware')
 
 const app = express()
 
@@ -12,6 +12,8 @@ const scheduledRegistry = new RegistryJob(60 * 1000)
 
 // for converting the request body into json
 app.use(bodyParser.json())
+
+app.use(AuthProxy)
 
 // do service resolution and add the proxy entry, otherwise
 // do an early 404 return

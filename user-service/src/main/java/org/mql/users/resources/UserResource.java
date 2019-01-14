@@ -6,10 +6,13 @@ import javax.inject.Inject;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import org.mql.users.domain.User;
 import org.mql.users.helpers.JpaBeanHelper;
 
@@ -32,6 +35,22 @@ public class UserResource {
       return allUsersQuery.getResultList();
     });
     return Response.ok(allUsers).build();
+  }
+
+  @GET
+  @Path("/{email}")
+  public Response findUser(@PathParam("email") String email) {
+    return jpa.executeInJpa(em -> {
+      TypedQuery<User> findUserByEmail = em
+          .createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
+      findUserByEmail.setParameter("email", email);
+      try {
+        return Response.ok(findUserByEmail.getSingleResult()).build();
+      } catch (Exception e) {
+        e.printStackTrace();
+        return Response.status(Status.BAD_REQUEST).build();
+      }
+    });
   }
 
   @GET

@@ -1,6 +1,5 @@
 package org.mql.artists.resources;
 
-import java.net.URI;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.json.Json;

@@ -16,6 +16,7 @@
 
 package org.mql.auth;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,6 +24,8 @@ import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
+import org.mql.auth.resources.AuthenticationResource;
+import org.mql.auth.resources.exceptions.AuthenticationExceptionMapper;
 
 /**
  * Simple Application that produces a greeting message.
@@ -31,9 +34,15 @@ import javax.ws.rs.core.Application;
 @ApplicationPath("/")
 public class AuthApplication extends Application {
 
+  private final Set<Class<?>> resources = new HashSet<>(
+      Arrays.asList(
+          AuthenticationResource.class,
+          AuthenticationExceptionMapper.class
+      )
+  );
+
   @Override
   public Set<Class<?>> getClasses() {
-    Set<Class<?>> set = new HashSet<>();
-    return Collections.unmodifiableSet(set);
+    return Collections.unmodifiableSet(resources);
   }
 }
