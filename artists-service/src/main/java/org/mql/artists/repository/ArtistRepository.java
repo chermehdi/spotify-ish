@@ -1,11 +1,6 @@
 package org.mql.artists.repository;
 
-/**
- * @author chermehdi
- */
-
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
@@ -15,6 +10,9 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 import org.mql.artists.domain.Artist;
 
+/**
+ * @author chermehdi
+ */
 @ApplicationScoped
 public class ArtistRepository {
 

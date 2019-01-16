@@ -8,11 +8,14 @@ const {ServiceResolver, ProxyRequest, AuthProxy} = require('./middleware')
 
 const app = express()
 
+// create the registration job
 const scheduledRegistry = new RegistryJob(60 * 1000)
 
 // for converting the request body into json
 app.use(bodyParser.json())
 
+// the authentication proxy is checked first, for early failure of the request
+// returns 401 in case of the failure
 app.use(AuthProxy)
 
 // do service resolution and add the proxy entry, otherwise

@@ -27,8 +27,10 @@ import javax.ws.rs.core.Application;
 import org.mql.auth.resources.AuthenticationResource;
 import org.mql.auth.resources.exceptions.AuthenticationExceptionMapper;
 
+
 /**
- * Simple Application that produces a greeting message.
+ * Bootstrapping class that defines the root of the Jax-rs resources and also the resources implied
+ * {@link AuthApplication#getClasses()}
  */
 @ApplicationScoped
 @ApplicationPath("/")

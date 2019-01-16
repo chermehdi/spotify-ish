@@ -50,6 +50,8 @@ function mergeRequest(returnedResponse, responseFromService) {
   // TODO: why this should be deleted, when kept we don't get any response which is weird
   delete headers['transfer-encoding']
   returnedResponse.set(headers)
+  returnedResponse.set('Content-type', 'application/json')
+  returnedResponse.set('content-type', 'application/json')
 }
 
 const ProxyRequest = async (req, res) => {
@@ -57,12 +59,15 @@ const ProxyRequest = async (req, res) => {
   try {
     const result = forwarder.request()
     .then(response => {
-      mergeRequest(res, response)
+      console.log('data is ', req.proxy, response.data)
+      // mergeRequest(res, response)
+      // console.log('response headers ', response.headers)
       if (response.headers['content-type'] === 'application/json') {
         res.json(response.data)
       } else {
         // this is a binary response
         console.log(typeof response.data)
+        console.log('headers ', response.headers['content-type'])
         // pipe the result into the response
         response.data.pipe(res)
       }

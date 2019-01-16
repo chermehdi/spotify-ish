@@ -16,6 +16,7 @@
 
 package org.mql.artists;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,17 +31,22 @@ import javax.ws.rs.core.Application;
 import org.mql.artists.resources.ArtistsResource;
 
 /**
- * Simple Application that produces a greeting message.
+ * Bootstrapping class that defines the root of the Jax-rs resources and also the resources implied
+ * {@link ArtistApplication#getClasses()}
  */
 @ApplicationScoped
 @ApplicationPath("/")
 public class ArtistApplication extends Application {
 
+  private final Set<Class<?>> resources = new HashSet<>(
+      Arrays.asList(
+          ArtistsResource.class
+      )
+  );
+
   @Override
   public Set<Class<?>> getClasses() {
-    Set<Class<?>> set = new HashSet<>();
-    set.add(ArtistsResource.class);
-    return Collections.unmodifiableSet(set);
+    return Collections.unmodifiableSet(resources);
   }
 
   @Produces

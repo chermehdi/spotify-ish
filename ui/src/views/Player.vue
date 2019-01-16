@@ -3,7 +3,7 @@
     <div class="sidebar">
       <div class="avatar_container">
         <div class="img__container">
-          <img :src="user.imgUrl" alt="" />
+          <img :src="user.imgUrl" alt=""/>
         </div>
         <div class="info">
           {{ user.firstName }} {{ user.lastName }}
@@ -24,8 +24,9 @@
         </div>
       </div>
     </div>
-    <div class="player" ref="d">
-      <audio-player :autoplay="true" v-if="music.src !== ''" :music=music></audio-player>
+    <div class="player">
+      <audio-player ref="player" :autoplay="true" v-if="music.src !== ''"
+                    :music=music></audio-player>
     </div>
   </div>
 </template>
@@ -50,9 +51,12 @@
       }
     },
     methods: {
-      ...mapActions(['getArtists', 'getUserInfo']),
+      ...mapActions(['getArtists', 'getUserInfo', 'getToken']),
       play(song, artist) {
         this.updateCurrentPlaying(song, artist)
+        if (this.$refs.player) {
+          this.$refs.player.thenPlay()
+        }
       },
       updateCurrentPlaying(song, artist) {
         const songUrl = `http://localhost:8080${song.url}`
@@ -69,7 +73,7 @@
     },
 
     mounted() {
-      console.log(this.$refs)
+      this.getToken()
       this.getUserInfo()
       this.getArtists()
     }
@@ -79,7 +83,7 @@
 <style scoped>
 
   .player__container {
-    height: calc(100vh - 66px);
+    height: calc(100vh);
     display: grid;
     grid-template-columns: 1fr 5fr;
   }
@@ -96,6 +100,7 @@
     color: var(--light);
     bottom: 0;
     min-width: 100%;
+    z-index: 10000;
   }
 
   ul {
@@ -128,23 +133,27 @@
     max-width: 90%;
     margin: 0 auto;
   }
+
   .img__container {
     width: 100%;
     margin-top: 1rem;
     text-align: center;
   }
+
   .img__container img {
     max-width: 60%;
     border-radius: 50%;
     border-color: var(--light);
     border: 2px solid;
   }
+
   .info {
     text-align: center;
     font-size: 1.2rem;
     margin-top: 1rem;
     color: var(--light);
   }
+
   .player .aplayer {
     margin: 0;
   }

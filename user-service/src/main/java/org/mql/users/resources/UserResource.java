@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import org.mql.users.domain.Profile;
 import org.mql.users.domain.User;
 import org.mql.users.helpers.JpaBeanHelper;
 
@@ -41,8 +42,28 @@ public class UserResource {
   @Path("/{email}")
   public Response findUser(@PathParam("email") String email) {
     return jpa.executeInJpa(em -> {
-      TypedQuery<User> findUserByEmail = em
+      TypedQuery<User> query = em
           .createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
+      return findUserInfo(email, query);
+    });
+  }
+
+  private Response findUserInfo(String email, TypedQuery<User> query) {
+    query.setParameter("email", email);
+    try {
+      return Response.ok(query.getSingleResult()).build();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return Response.status(Status.BAD_REQUEST).build();
+    }
+  }
+
+  @GET
+  @Path("/me/{email}")
+  public Response userInfo(@PathParam("email") String email) {
+    return jpa.executeInJpa(em -> {
+      TypedQuery<Profile> findUserByEmail = em
+          .createQuery("SELECT u.profile FROM User u WHERE u.email = :email", Profile.class);
       findUserByEmail.setParameter("email", email);
       try {
         return Response.ok(findUserByEmail.getSingleResult()).build();
@@ -51,13 +72,5 @@ public class UserResource {
         return Response.status(Status.BAD_REQUEST).build();
       }
     });
-  }
-
-  @GET
-  @Path("/create")
-  public Response create() {
-    User user = new User("mehdi.cheracher@gmail.com", "123123");
-    jpa.executeInJpaTransactional(em -> em.persist(user));
-    return Response.ok().build();
   }
 }

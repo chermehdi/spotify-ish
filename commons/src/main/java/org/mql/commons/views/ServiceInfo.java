@@ -1,6 +1,8 @@
 package org.mql.commons.views;
 
 /**
+ * A DTO that carries the service information required so that a service is known to other services
+ *
  * @author chermehdi
  */
 public class ServiceInfo {

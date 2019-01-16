@@ -12,12 +12,22 @@ import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
 
 /**
+ * Utility class that permits the starting of a scheduled job, that simply registers a micro-service
+ * with the <h1>Service Registry</h1>
+ *
  * @author chermehdi
  */
 public final class HeartBeats {
 
-  public static void startHeartBeats(String appName, String appHost, int appPort) throws SchedulerException {
-    System.out.println("hello from heartbeats " + Thread.currentThread().getName());
+  /**
+   * start the scheduled job {@link HeartBeatJob}
+   *
+   * @param appName the application name used to identify it by other services
+   * @param appHost the host of the application
+   * @param appPort the port where the server started
+   */
+  public static void startHeartBeats(String appName, String appHost, int appPort)
+      throws SchedulerException {
     SchedulerFactory schedulerFactory = new StdSchedulerFactory();
     Scheduler scheduler = schedulerFactory.getScheduler();
     JobDetail jobDetail = newJob(HeartBeatJob.class)
@@ -26,6 +36,7 @@ public final class HeartBeats {
         .usingJobData("appPort", appPort)
         .withIdentity("heartbeat-" + appName)
         .build();
+
     Trigger trigger = newTrigger()
         .withIdentity("heartbeat-trigger-" + appName)
         .startNow()
@@ -33,8 +44,8 @@ public final class HeartBeats {
             .withIntervalInSeconds(60)
             .repeatForever())
         .build();
+
     scheduler.scheduleJob(jobDetail, trigger);
     scheduler.start();
-    System.out.println("scheduler state " + scheduler.isStarted());
   }
 }

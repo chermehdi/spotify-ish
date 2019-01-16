@@ -1,6 +1,8 @@
 package org.mql.commons.views;
 
 /**
+ * DTO for the user object (kept lightweight)
+ *
  * @author chermehdi
  */
 public class UserView {

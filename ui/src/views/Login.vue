@@ -12,14 +12,17 @@
             <div class="group">
               <input type="text" v-model="email" required>
               <span class="highlight"></span>
-              <span class="bar"></span>
+              <span class="bar" :class="getErrorClass"></span>
               <label>Your Email</label>
             </div>
             <div class="group">
               <input type="password" v-model="password" required>
               <span class="highlight"></span>
-              <span class="bar"></span>
+              <span class="bar" :class="getErrorClass"></span>
               <label>Your password</label>
+            </div>
+            <div class="error__message" v-if="!loginState.success">
+              Wrong Credentials, Try again
             </div>
             <input type="submit" class="pure-material-button-contained" value="Login"/>
           </form>
@@ -31,7 +34,7 @@
 
 <script>
   import HeaderText from '@/components/HeaderText'
-  import {mapActions} from 'vuex'
+  import {mapActions, mapState} from 'vuex'
 
   export default {
     components: {HeaderText},
@@ -42,12 +45,20 @@
         loading: false
       }
     },
+    computed: {
+      ...mapState(['loginState']),
+      getErrorClass() {
+        const temp = {
+          error: !this.loginState.success
+        }
+        return temp
+      }
+    },
     methods: {
       ...mapActions(['loginAction']),
       login(e) {
         e.preventDefault()
         this.loading = true
-        console.log('login action')
         this.loginAction({
           email: this.email,
           password: this.password
@@ -146,6 +157,16 @@
     transition: 0.2s ease all;
     -moz-transition: 0.2s ease all;
     -webkit-transition: 0.2s ease all;
+  }
+
+  .bar.error:before,
+  .bar.error:after {
+    background: red;
+  }
+
+  .error__message {
+    color: red;
+    font-size: .9rem;
   }
 
   .bar:before {
@@ -300,7 +321,7 @@
   /* Disabled */
   .pure-material-button-contained:disabled {
     color: rgba(0, 0, 0, 0.38);
-    background-color: rgba( 0, 0, 0, 0.12);
+    background-color: rgba(0, 0, 0, 0.12);
     box-shadow: none;
     cursor: initial;
   }

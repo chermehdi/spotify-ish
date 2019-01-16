@@ -9,6 +9,9 @@ import org.mql.commons.views.TokenResponse;
 import org.mql.commons.views.UserView;
 
 /**
+ * Service checking the validity of the user information provided by communicating with the user
+ * service
+ *
  * @author chermehdi
  */
 @ApplicationScoped
@@ -20,11 +23,10 @@ public class AuthenticationService extends NetworkService {
   public Optional<TokenResponse> login(LoginRequest request) {
     ServiceInfo serviceInfo = getServiceInfo("user-service");
     try {
-      System.out.println("the url " + (serviceInfo.getUrl() + "/users/" + request.getEmail()));
       UserView userView = client.target(serviceInfo.getUrl() + "/users/" + request.getEmail())
           .request()
           .get(UserView.class);
-      // TODO: password encoding
+      // TODO: password encoding, it's a demo so who cares
       if (request.getPassword().equals(userView.getPassword())) {
         return Optional.ofNullable(tokenHandler.generateToken(userView));
       } else {

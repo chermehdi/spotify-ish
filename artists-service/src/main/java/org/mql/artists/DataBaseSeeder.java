@@ -14,6 +14,9 @@ import org.mql.artists.domain.Song;
 import org.mql.artists.service.ArtistService;
 
 /**
+ * Seed Database default test data to be used in the demo, this class is to be scanned by the CDI
+ * container, and retrieved so that it's run method can be run at application bootstrap
+ *
  * @author chermehdi
  */
 @ApplicationScoped

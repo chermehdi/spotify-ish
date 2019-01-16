@@ -1,6 +1,8 @@
 package org.mql.commons.views;
 
 /**
+ * DTO transferring the JWT token generated to the user
+ *
  * @author chermehdi
  */
 public class TokenResponse {
@@ -10,11 +12,9 @@ public class TokenResponse {
   public TokenResponse() {
   }
 
-
   public TokenResponse(String token) {
     this.token = token;
   }
-
 
   public String getToken() {
     return token;

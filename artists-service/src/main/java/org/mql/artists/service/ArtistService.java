@@ -7,6 +7,8 @@ import org.mql.artists.domain.Artist;
 import org.mql.artists.repository.ArtistRepository;
 
 /**
+ * Delegate service to the {@link ArtistRepository}
+ *
  * @author chermehdi
  */
 @ApplicationScoped

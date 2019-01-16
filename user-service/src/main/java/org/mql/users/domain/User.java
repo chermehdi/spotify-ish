@@ -4,6 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 /**
  * @author chermehdi
@@ -18,6 +21,10 @@ public class User {
   private String email;
 
   private String password;
+
+  @Cascade(CascadeType.ALL)
+  @OneToOne
+  private Profile profile;
 
   public User() {
   }
@@ -49,5 +56,13 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public void setProfile(Profile profile) {
+    this.profile = profile;
+  }
+
+  public Profile getProfile() {
+    return profile;
   }
 }

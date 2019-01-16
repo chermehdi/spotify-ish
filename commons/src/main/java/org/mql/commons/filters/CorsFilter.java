@@ -7,6 +7,7 @@ import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.ext.Provider;
 
 /**
+ * Adds the required headers for a Cors enabled resource
  * @author chermehdi
  */
 @Provider

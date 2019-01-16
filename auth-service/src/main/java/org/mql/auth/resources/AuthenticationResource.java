@@ -13,6 +13,8 @@ import org.mql.auth.service.AuthenticationService;
 import org.mql.commons.views.TokenResponse;
 
 /**
+ * The exposed api of the service, is one simple route, that handles the login of the user
+ *
  * @author chermehdi
  */
 @Path("/auth")

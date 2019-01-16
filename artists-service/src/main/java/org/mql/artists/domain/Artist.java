@@ -23,6 +23,8 @@ public class Artist {
 
   private String name;
 
+  // we have base64 images that needs a lot of space, should be refactored
+  // for demo purposes only
   @Column(length = 15024)
   private String picture;
 

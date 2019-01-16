@@ -17,7 +17,10 @@ const state = {
   user: {
     userInfo: {}
   },
-  artists: []
+  artists: [],
+  loginState: {
+    success: true
+  }
 }
 
 const getters = {
@@ -35,7 +38,7 @@ const actions = {
     axios.post('/api/auth-service/auth/login', payload)
     .then(res => res.data)
     .then(tokenResponse => store.commit('SET_USER_TOKEN', tokenResponse))
-    .catch(err => console.log('the error is ', err))
+    .catch(err => store.commit('LOGIN_ERROR'))
   },
   getArtists(store) {
     axios.get('/api/artist-service/artists')
@@ -51,6 +54,10 @@ const actions = {
     })
     .then(res => res.data)
     .then(userInfo => store.commit('UPDATE_USER_INFO', userInfo))
+  },
+  getToken(store) {
+    const tokenResponse = { token: localStorage.getItem('_token')}
+    store.commit('SET_USER_TOKEN', tokenResponse)
   }
 }
 
@@ -66,12 +73,13 @@ const mutations = {
     state.artists = artists
   },
   UPDATE_USER_INFO(state, userInfo) {
-    console.log('USER_INFO', userInfo)
     state.user.userInfo = userInfo
   },
   UPDATE_USER_EMAIL(state, userEmail) {
-    console.log('USER_EMAIL', userEmail)
     state.user.email = userEmail.email
+  },
+  LOGIN_ERROR(state) {
+    state.loginState.success = false
   }
 }
 

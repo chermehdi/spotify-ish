@@ -16,6 +16,10 @@ import org.mql.commons.views.TokenResponse;
 import org.mql.commons.views.UserView;
 
 /**
+ * JWT token generation service, generates the tokens based on the JWT_SECRET env variables and the
+ * provided user data, this is a CDI managed bean so a manual creation will not work, unless an
+ * explicit invocation of the {@link TokenHandler#init()} method is assured
+ *
  * @author chermehdi
  */
 @ApplicationScoped

@@ -13,7 +13,7 @@ const constructUrl = (url, serviceInfo) => {
   return `http://${serviceInfo.host}:${serviceInfo.port}/${url}`
 }
 
-// resolves a service's information { port, host } based on it's name
+// Resolves a service's information { port, host } based on it's name
 // adds a proxy object to the request to be used by future middleware to indicate the target service's actual url
 class Resolver {
 

@@ -1,5 +1,8 @@
 const axios = require('axios')
 
+/**
+ *
+ */
 class JobScheduler {
 
   constructor(time) {

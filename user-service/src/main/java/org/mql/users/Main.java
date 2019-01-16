@@ -39,14 +39,22 @@ public final class Main {
     startDbServer(args);
     server = startServer();
     cdiContainer = server.getContainer();
+    seedDatabase();
     HeartBeats.startHeartBeats("user-service", "127.0.0.1", server.getPort());
   }
 
+  // start database seeding to fill with dummy data
+  private static void seedDatabase() {
+    cdiContainer.select(DatabaseSeeder.class).get().run();
+  }
+
+  // start the in memory database server
   private static void startDbServer(String[] args) throws SQLException {
     org.h2.tools.Server dbServer = org.h2.tools.Server.createTcpServer(args);
     dbServer.start();
   }
 
+  // start the embedded web server
   protected static Server startServer() throws IOException {
     LogManager.getLogManager().readConfiguration(
         Main.class.getResourceAsStream("/logging.properties"));

@@ -3,6 +3,8 @@ package org.mql.auth.dto;
 import javax.validation.constraints.NotNull;
 
 /**
+ * Simple Dto object that ensures the validity of it's fields
+ *
  * @author chermehdi
  */
 public class LoginRequest {

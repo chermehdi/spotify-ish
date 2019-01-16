@@ -5,13 +5,17 @@ const isUrlProtected = (url) => {
   return protectedUrls.filter(el => el.test(url)).length > 0
 }
 
+/**
+ * checks if the request is accessible by validating it against a bunch of
+ * regular expressions found in the AuthRoutes.js file
+ */
 class Protector {
   constructor(req) {
     this.req = req
     this.token = this.req.headers['authorization']
   }
 
-  // if the verfication fails because the signing of the token this will throw an exception
+  // if the verification fails because the signing of the token this will throw an exception
   isValid() {
     if (!this.token) {
       return false
@@ -32,7 +36,6 @@ const AuthProxy = (req, res, next) => {
       req.jwt_user = unsigned
       next()
     } catch (e) {
-      console.error('AUTH', e)
       res.status(401)
       res.end()
     }
