@@ -1,6 +1,15 @@
 <template>
   <div class="player__container">
-    <div class="sidebar"></div>
+    <div class="sidebar">
+      <div class="avatar_container">
+        <div class="img__container">
+          <img :src="user.imgUrl" alt="" />
+        </div>
+        <div class="info">
+          {{ user.firstName }} {{ user.lastName }}
+        </div>
+      </div>
+    </div>
     <div class="playing">
       <h1 class="header">Available Artists</h1>
       <div class="Wrap">
@@ -15,7 +24,7 @@
         </div>
       </div>
     </div>
-    <div class="player">
+    <div class="player" ref="d">
       <audio-player :autoplay="true" v-if="music.src !== ''" :music=music></audio-player>
     </div>
   </div>
@@ -41,7 +50,7 @@
       }
     },
     methods: {
-      ...mapActions(['getArtists']),
+      ...mapActions(['getArtists', 'getUserInfo']),
       play(song, artist) {
         this.updateCurrentPlaying(song, artist)
       },
@@ -56,10 +65,12 @@
       }
     },
     computed: {
-      ...mapGetters(['artists'])
+      ...mapGetters(['artists', 'user'])
     },
 
     mounted() {
+      console.log(this.$refs)
+      this.getUserInfo()
       this.getArtists()
     }
   }
@@ -68,7 +79,7 @@
 <style scoped>
 
   .player__container {
-    height: calc(100vh - 100px);
+    height: calc(100vh - 66px);
     display: grid;
     grid-template-columns: 1fr 5fr;
   }
@@ -81,7 +92,6 @@
   .player {
     position: fixed;
     box-shadow: -1px 0 2px rgba(0, 0, 0, .3);
-    min-height: 100px;
     background-color: var(--primary-darker);
     color: var(--light);
     bottom: 0;
@@ -117,5 +127,25 @@
   .Wrap {
     max-width: 90%;
     margin: 0 auto;
+  }
+  .img__container {
+    width: 100%;
+    margin-top: 1rem;
+    text-align: center;
+  }
+  .img__container img {
+    max-width: 60%;
+    border-radius: 50%;
+    border-color: var(--light);
+    border: 2px solid;
+  }
+  .info {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    color: var(--light);
+  }
+  .player .aplayer {
+    margin: 0;
   }
 </style>
