@@ -20,6 +20,9 @@ import java.io.IOException;
 import java.util.logging.LogManager;
 
 import io.helidon.microprofile.server.Server;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import org.mql.commons.HeartBeats;
 import org.quartz.SchedulerException;
 
@@ -30,6 +33,7 @@ public final class Main {
 
   public static void main(final String[] args) throws IOException, SchedulerException {
     Server server = startServer();
+    server.getContainer().select(DataBaseSeeder.class).get().run();
     HeartBeats.startHeartBeats("artist-service", "127.0.0.1", server.getPort());
   }
 

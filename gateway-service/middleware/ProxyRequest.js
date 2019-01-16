@@ -37,8 +37,9 @@ class Forwarder {
   }
 
   isStreamRequest() {
+    // TODO: this is not a good practice it should be bypassed later
     return this.isGetRequest() && this.req.headers['accept']
-        === 'application/octet-stream'
+        === '*/*'
   }
 }
 
@@ -61,13 +62,17 @@ const ProxyRequest = async (req, res) => {
         res.json(response.data)
       } else {
         // this is a binary response
-
+        console.log(typeof response.data)
         // pipe the result into the response
         response.data.pipe(res)
       }
-    }).catch(e => console.log('catch ', e))
+    }).catch(e => {
+      console.log(e.message)
+      res.status(401)
+      res.end()
+    })
   } catch (e) {
-    console.error('PROXY_REQUEST',e)
+    console.error('PROXY_REQUEST', e)
     res.status(500)
     res.end()
   }

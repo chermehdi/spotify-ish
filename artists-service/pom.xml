@@ -32,6 +32,7 @@
 
   <properties>
     <helidon.version>0.9.1</helidon.version>
+    <hibernate.version>4.3.6.Final</hibernate.version>
     <!-- Default package. Will be overriden by Maven archetype -->
     <package>io.helidon.examples.quickstart.mp</package>
     <mainClass>org.mql.artists.Main</mainClass>
@@ -227,6 +228,36 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-api</artifactId>
+      <version>7.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.4.197</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>${hibernate.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mql</groupId>
+      <artifactId>commons</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <!-- For connection pooling -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-c3p0</artifactId>
+      <version>${hibernate.version}</version>
     </dependency>
   </dependencies>
 </project>

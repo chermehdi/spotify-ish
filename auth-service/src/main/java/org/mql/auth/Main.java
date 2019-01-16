@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.LogManager;
 import javax.enterprise.inject.se.SeContainer;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import org.mql.commons.HeartBeats;

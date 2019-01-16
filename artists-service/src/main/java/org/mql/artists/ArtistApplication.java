@@ -21,6 +21,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 import org.mql.artists.resources.ArtistsResource;
@@ -37,5 +41,11 @@ public class ArtistApplication extends Application {
     Set<Class<?>> set = new HashSet<>();
     set.add(ArtistsResource.class);
     return Collections.unmodifiableSet(set);
+  }
+
+  @Produces
+  public EntityManager em() {
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("artists-unit");
+    return emf.createEntityManager();
   }
 }

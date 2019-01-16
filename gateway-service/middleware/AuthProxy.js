@@ -9,7 +9,6 @@ class Protector {
   constructor(req) {
     this.req = req
     this.token = this.req.headers['authorization']
-    console.log(this.token, this.req.headers)
   }
 
   // if the verfication fails because the signing of the token this will throw an exception
@@ -37,7 +36,6 @@ const AuthProxy = (req, res, next) => {
       res.status(401)
       res.end()
     }
-
   } else {
     next()
   }

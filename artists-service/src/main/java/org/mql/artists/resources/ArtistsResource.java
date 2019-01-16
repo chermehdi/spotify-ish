@@ -2,6 +2,8 @@ package org.mql.artists.resources;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
@@ -14,24 +16,27 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import org.mql.artists.service.ArtistService;
 
 /**
  * @author chermehdi
  */
 @Path("/artists")
 @Produces(MediaType.APPLICATION_JSON)
+@ApplicationScoped
 public class ArtistsResource {
 
   @Context
   UriInfo uriInfo;
 
+  @Inject
+  ArtistService artistService;
+
   static Map<String, String> artists = new ConcurrentHashMap<>();
 
   @GET
   public Response getArtists() {
-    JsonArray allArtists = Json.createArrayBuilder()
-        .add(computeArtistsArray()).build();
-    return Response.ok(allArtists).build();
+    return Response.ok(artistService.getAllArtists()).build();
   }
 
 

@@ -37,6 +37,7 @@
       login(e) {
         e.preventDefault()
         this.loading = true
+        console.log('login action')
         this.loginAction({
           email: this.email,
           password: this.password
