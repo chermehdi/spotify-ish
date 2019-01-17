@@ -9,8 +9,8 @@ import org.mql.commons.views.TokenResponse;
 import org.mql.commons.views.UserView;
 
 /**
- * Service checking the validity of the user information provided by communicating with the user
- * service
+ * Service checking the validity of the user information provided by communicating with the
+ * user-service
  *
  * @author chermehdi
  */

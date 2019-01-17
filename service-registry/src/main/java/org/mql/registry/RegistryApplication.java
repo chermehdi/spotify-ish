@@ -27,13 +27,16 @@ import org.mql.registry.exceptions.ApplicationNotFoundMapper;
 import org.mql.registry.resources.RegistryResource;
 
 /**
- * Simple Application that produces a greeting message.
+ * Bootstrapping class that defines the root of the Jax-rs resources and also the resources implied
+ * {@link RegistryApplication#getClasses()}
+ *
+ * @author chermehdi
  */
 @ApplicationScoped
 @ApplicationPath("/")
 public class RegistryApplication extends Application {
 
-  private final Set<Class<?>> resourceClasses = new HashSet<>(
+  private final Set<Class<?>> resources = new HashSet<>(
       Arrays.asList(
           RegistryResource.class, ApplicationNotFoundMapper.class
       )
@@ -41,6 +44,6 @@ public class RegistryApplication extends Application {
 
   @Override
   public Set<Class<?>> getClasses() {
-    return Collections.unmodifiableSet(resourceClasses);
+    return Collections.unmodifiableSet(resources);
   }
 }
